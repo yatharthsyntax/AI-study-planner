@@ -10,9 +10,7 @@ Features:
 - LocalStorage persistence
 
 How to use:
-1. Open `index.html` in your browser (or host with GitHub Pages).
-2. Fill in subjects, hours per day, and optional exam dates.
-3. Click "Generate Plan".
-4. Export the plan to save or import later.
+1. Fill in subjects, hours per day, and optional exam dates.
+2. Click "Generate Plan".
+3. Export the plan to save or import later.
 
-Made for portfolio/demo. You can expand the planner with server-side features, user accounts, sync, notifications, and real ML models.
