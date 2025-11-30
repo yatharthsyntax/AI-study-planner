@@ -1,5 +1,3 @@
-// Simple AI-like study planner (heuristic-based). Stores plans in localStorage.
-// Data model: subjects array, notes array, hours per day, session length, exam dates
 const $ = (sel)=>document.querySelector(sel);
 const qs = (sel)=>document.querySelectorAll(sel);
 
@@ -11,7 +9,7 @@ const state = {
   hoursPerDay: 4,
   sessionLen: 25,
   useSpaced: true,
-  plan: {}, // date -> tasks[]
+  plan: {}, 
 };
 
 function loadState(){
@@ -30,7 +28,7 @@ function parseInput(){
   return {subjects, hoursPerDay, sessionLen, notes, examDates, useSpaced};
 }
 
-// Simple day iterator
+
 function addDays(d, n){ let x = new Date(d); x.setDate(x.getDate()+n); return x; }
 function fmt(d){ return d.toISOString().slice(0,10) }
 
@@ -41,12 +39,12 @@ function generatePlanFromInput(){
   state.hoursPerDay = inp.hoursPerDay;
   state.sessionLen = inp.sessionLen;
   state.useSpaced = inp.useSpaced;
-  // planning horizon: 14 days
+
   const horizon = 14;
   const today = new Date();
   state.plan = {};
 
-  // priority score for subject: nearer exam -> higher score
+
   const examMap = {};
   inp.examDates.forEach(ed=>{
     try{
@@ -54,7 +52,6 @@ function generatePlanFromInput(){
     }catch(e){}
   });
 
-  // create simple task list per subject: 3 tasks each (read, practice, revise)
   const baseTasks = [];
   state.subjects.forEach(sub=>{
     baseTasks.push({id:uid(), title:`${sub} — Read theory`, sub});
@@ -62,18 +59,15 @@ function generatePlanFromInput(){
     baseTasks.push({id:uid(), title:`${sub} — Quick revision`, sub});
   });
 
-  // add user notes as individual tasks
   state.notes.forEach(n=>{
     baseTasks.push({id:uid(), title:`Topic: ${n}`, sub: (state.subjects[0]||'General')});
   });
 
-  // shuffle but keep deterministic-ish
   for(let day=0; day<horizon; day++){
     const date = fmt(addDays(today, day));
     state.plan[date] = [];
   }
 
-  // Distribute tasks across days balancing by hoursPerDay/sessionLen
   const sessionsPerDay = Math.max(1, Math.floor(state.hoursPerDay*60 / state.sessionLen));
   const taskQueue = [...baseTasks];
   let di = 0;
@@ -85,7 +79,6 @@ function generatePlanFromInput(){
     if(planned.length < sessionsPerDay){
       planned.push({...task, estMin: state.sessionLen, done:false});
     } else {
-      // find next day with free slot
       let placed=false;
       for(let k=0;k<horizon;k++){
         const d2 = fmt(addDays(today, (dateIndex+k)%horizon));
@@ -95,16 +88,13 @@ function generatePlanFromInput(){
         }
       }
       if(!placed) {
-        // push to last day
         state.plan[fmt(addDays(today,horizon-1))].push({...task, estMin: state.sessionLen, done:false});
       }
     }
     di++;
   }
 
-  // Add spaced repetition for tasks done (future placeholders)
   if(state.useSpaced){
-    // For each task scheduled in first 7 days, add review slots at +2, +5, +12 days
     const reviewOffsets = [2,5,12];
     const keys = Object.keys(state.plan);
     keys.forEach((d, idx)=>{
@@ -125,7 +115,6 @@ function generatePlanFromInput(){
 }
 
 function renderPlan(){
-  // Today's tasks
   const todayKey = fmt(new Date());
   const todayTasks = state.plan[todayKey]||[];
   const $today = $('#todayTasks'); $today.innerHTML='';
@@ -143,7 +132,6 @@ function renderPlan(){
     $today.appendChild(el);
   });
 
-  // grid
   const $grid = $('#planGrid'); $grid.innerHTML='';
   const keys = Object.keys(state.plan).slice(0,14);
   keys.forEach(k=>{
@@ -191,9 +179,7 @@ function wireup(){
   $('#themeToggle').addEventListener('change',(e)=>{
     document.body.classList.toggle('light', e.target.checked);
   });
-  // preload saved state
   loadState();
-  // fill inputs from state if present
   $('#subjectsInput').value = state.subjects.join(', ');
   $('#hoursPerDay').value = state.hoursPerDay;
   $('#sessionLen').value = state.sessionLen;
