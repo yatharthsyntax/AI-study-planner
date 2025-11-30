@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Study Planner — Yatharth</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <h1>AI Study Planner</h1>
+      <div class="controls">
+        <button id="importBtn" title="Import plan">Import</button>
+        <button id="exportBtn" title="Export plan">Export</button>
+        <label class="switch">
+          <input id="themeToggle" type="checkbox">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="panel left">
+        <form id="setupForm" class="card">
+          <h2>Create a Study Plan</h2>
+
+          <label>Subjects (comma separated)</label>
+          <input id="subjectsInput" placeholder="Maths, Physics, Chemistry" />
+
+          <label>Available hours / day</label>
+          <input id="hoursPerDay" type="number" min="1" max="12" value="4" />
+
+          <label>Exam Dates (optional) — format YYYY-MM-DD, comma separated</label>
+          <input id="examDates" placeholder="2025-12-10,2025-12-22" />
+
+          <label>Preferred session length (mins)</label>
+          <select id="sessionLen">
+            <option value="25">25 (Pomodoro)</option>
+            <option value="50">50</option>
+            <option value="40">40</option>
+          </select>
+
+          <label>
+            <input type="checkbox" id="useSpaced" checked /> Use spaced-repetition reminders
+          </label>
+
+          <textarea id="notes" placeholder="Optional: paste chapters or weak topics, one per line"></textarea>
+
+          <div class="row">
+            <button id="generateBtn" class="primary">Generate Plan</button>
+            <button id="clearBtn" type="button" class="ghost">Clear</button>
+          </div>
+        </form>
+
+        <div class="card tips">
+          <h3>Pro tips</h3>
+          <ul>
+            <li>Use exact exam dates for better prioritization.</li>
+            <li>Shorter focused sessions beat long unfocused ones.</li>
+            <li>Mark tasks done to let the planner re-balance future days.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="panel right">
+        <div class="card dashboard">
+          <h2>Today's Plan</h2>
+          <div id="todayTasks" class="tasks"></div>
+        </div>
+
+        <div class="card calendar" id="planCard">
+          <h2>Upcoming 14 days</h2>
+          <div id="planGrid" class="grid"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Made with ❤️ • Export/Import JSON • Mobile-friendly</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

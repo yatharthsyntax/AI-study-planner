@@ -1,0 +1,87 @@
+:root{
+  --bg:#0f1724; --card:#0b1220; --muted:#9aa4b2; --accent:#00d4ff; --glass: rgba(255,255,255,0.03);
+  --light-bg:#f6f8fb; --light-card:#ffffff; --light-text:#0b1220;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Inter,UI-Sans-Serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+  background:linear-gradient(180deg, var(--bg) 0%, #071026 100%);
+  color:#e6eef6;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  transition:background .3s, color .3s;
+  padding-bottom:40px;
+}
+
+/* Light theme */
+body.light{
+  background:var(--light-bg);
+  color:var(--light-text);
+}
+
+/* App layout */
+.app{max-width:1100px;margin:24px auto;padding:12px}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-radius:10px;background:var(--card);box-shadow:0 6px 20px rgba(2,6,23,0.6);backdrop-filter: blur(6px)}
+.topbar h1{margin:0;font-size:1.15rem;letter-spacing:0.4px}
+.controls{display:flex;gap:8px;align-items:center}
+button{background:transparent;border:1px solid rgba(255,255,255,0.04);color:inherit;padding:6px 10px;border-radius:8px;cursor:pointer}
+button.primary{background:linear-gradient(90deg,var(--accent),#00b3d7);color:#001; border: none;font-weight:600}
+button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06)}
+.switch{display:inline-block;position:relative;width:46px;height:26px}
+.switch input{display:none}
+.slider{position:absolute;inset:0;border-radius:999px;background:#334155;transition:all .25s}
+.slider:before{content:'';position:absolute;left:4px;top:4px;width:18px;height:18px;border-radius:50%;background:#fff;transition:all .25s}
+.switch input:checked + .slider{background:linear-gradient(90deg,var(--accent),#00b3d7)}
+.switch input:checked + .slider:before{transform:translateX(20px)}
+
+/* layout grid */
+.container{display:grid;grid-template-columns:1fr 420px;gap:18px;margin-top:18px}
+.panel{min-height:200px}
+.card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:16px;border-radius:12px;box-shadow:0 8px 30px rgba(2,6,23,0.6);transition:transform .25s}
+.card h2{margin-top:0}
+
+/* form */
+#setupForm input,#setupForm select,#setupForm textarea{
+  width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit;margin:8px 0;font-size:0.95rem
+}
+#setupForm textarea{min-height:90px;resize:vertical}
+.row{display:flex;gap:8px;align-items:center}
+.row .primary{flex:1}
+.tips ul{margin:8px 0 0 18px;color:var(--muted);font-size:0.95rem}
+
+/* dashboard */
+.tasks{display:flex;flex-direction:column;gap:8px}
+.task{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;background:var(--glass)}
+.task p{margin:0;font-size:0.95rem}
+.task .meta{font-size:0.8rem;color:var(--muted)}
+.task button{padding:6px 8px;font-size:0.85rem;border-radius:7px}
+
+/* calendar grid */
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.day{padding:8px;border-radius:8px;background:rgba(255,255,255,0.02);min-height:90px;display:flex;flex-direction:column;gap:6px}
+.day h4{margin:0;font-size:0.9rem}
+.badge{display:inline-block;padding:3px 6px;border-radius:999px;background:rgba(255,255,255,0.04);font-size:0.78rem}
+
+/* animations */
+.card{transform:translateY(6px)}
+.card:hover{transform:translateY(0)}
+.topbar, .card{transition:all .28s cubic-bezier(.2,.9,.2,1)}
+
+/* responsiveness */
+@media (max-width:900px){
+  .container{grid-template-columns:1fr; padding:0 6px}
+  .grid{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:480px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .topbar{flex-direction:column;align-items:flex-start;gap:8px}
+  .controls{width:100%;justify-content:space-between}
+  .switch{transform:scale(.92)}
+}
+
+/* light theme overrides */
+body.light .card{background:var(--light-card);box-shadow:0 6px 18px rgba(10,10,20,0.06)}
+body.light .topbar{background:var(--light-card)}
+body.light button{border:1px solid rgba(0,0,0,0.06)}
